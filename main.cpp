@@ -6,7 +6,7 @@ using namespace std;
 //We make a structure for the state
 typedef struct {
     int n;
-    int numOfEdges;
+    int numEdges;
     bool end;
 } State;
 
@@ -31,9 +31,9 @@ bool NFA(char *w, State sEdge, Edge **edgeM, int current)
 
     if (current == strlen(w) && !sEdge.end) return false;
 
-    if (current <= strlen(w) && sEdge.numOfEdges == 0) return false;
+    if (current <= strlen(w) && sEdge.numEdges == 0) return false;
 
-    for (int i = 0; i < sEdge.numOfEdges; i++)
+    for (int i = 0; i < sEdge.numEdges; i++)
     {
         if (edgeM[sEdge.n][i].letter[0] == w[current])
             if (NFA(w, edgeM[sEdge.n][i].stop, edgeM, current + 1)) return true;
@@ -44,10 +44,10 @@ bool NFA(char *w, State sEdge, Edge **edgeM, int current)
 
 }
 
-
 // The empty word is "*";
 
-int main() {
+int main()
+{
     ifstream f("../datein.txt"); // we use this file for testing the function
 
     char word[21];
@@ -57,9 +57,9 @@ int main() {
     //Then we read the number of states
     f >> nStates;
 
-    // We use the parameter States to represent the state
+    // We use the parameter "States" to represent the state
     State States[nStates];
-    // Initializes the states;
+    // We initialize the states;
     for (int i = 0; i < nStates; i++)
     {
         States[i].end = false;
@@ -80,15 +80,15 @@ int main() {
     // Now we read the number of edges that the state "i" has;
     for (int i = 0; i < nStates; i++)
     {
-        f >> States[i].numOfEdges;
-        edges[i] = new Edge[States[i].numOfEdges];
+        f >> States[i].numEdges;
+        edges[i] = new Edge[States[i].numEdges];
     }
 
 
     for (int i = 0; i < nStates; i++)
     {
 
-        for (int j = 0; j < States[i].numOfEdges; j++)
+        for (int j = 0; j < States[i].numEdges; j++)
         {
             char letter[1]; // Used to see what letter brings us to witch state;
             int lastEdgeState; // the state that we ended up into
@@ -99,9 +99,10 @@ int main() {
             edges[i][j].letter = new char[1];
             strcpy(edges[i][j].letter, letter); // save the letter into our matrix;
 
-            // Reads only the number of the state that we reached with the specific letter;
+            // We read the number of the state that we reached with the specific letter;
             f >> lastEdgeState;
             edges[i][j].stop = States[lastEdgeState];
+            // We display the states
             cout << edges[i][j].start.n << " " << edges[i][j].letter[0] << " " << edges[i][j].stop.n << "\n";
 
 
